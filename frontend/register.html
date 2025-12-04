@@ -303,7 +303,7 @@
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/check-email?email=${encodeURIComponent(email)}`);
+      const res = await fetch(`https://YOUR-RENDER-URL/check-email?email=${encodeURIComponent(email)}`);
       const data = await res.json();
 
       if (res.ok && data.available) {
@@ -357,3 +357,4 @@
 
 </body>
 </html>
+
