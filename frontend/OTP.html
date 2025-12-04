@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email OTP</title>
+</head>
+<style>
+  
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: rgb(78, 142, 153);
+      display: flex;
+      width: 100%;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    /* Hanger container row */
+    .hanger-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0px 60px;
+      position: relative;
+    }
+
+    .hanger {
+      margin-top: 0;
+      padding-top: 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: swing 1.5s infinite ease-in-out;
+      transform-origin: top center;
+      
+    }
+
+    .rope {
+      width: 4px;
+      height: 210px;
+      background-color: #333;
+    }
+
+    .rope2 {
+      width: 4px;
+      height: 210px;
+      background-color: #333;
+    }
+
+
+    .text {
+      background: #20c997;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 0px;
+    }
+
+    @keyframes swing {
+      0% { transform: rotate(2deg); }
+      50% { transform: rotate(-2deg); }
+      100% { transform: rotate(2deg); }
+    }
+
+ .box {
+      width: 100%;
+      max-height: 100%;
+     padding: 40px 190px;
+      background: rgb(180, 136, 61);
+      border: 3px solid #444;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      margin-top: 20px;
+      transform: translateX(-20px);
+      position: relative;
+  width: 300px;
+  height: 30px;
+  margin: 60px;
+    }
+
+    
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 8s linear infinite;
+  color: rgb(56, 93, 122);
+  font-size: 45px;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+    .container1 {
+      background-color: #aeb28c;
+      margin: 80px;
+      padding: 60px 90px;
+      border-radius: 55px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+
+  input#otp {
+    width: 100%;
+    padding: 1px 1px;
+    margin-top: 15px;
+    border: 2px solid #555;
+    border-radius: 10px;
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+    button {
+      margin-top: 20px;
+      padding: 15px 40px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #5a4a9a;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #260371;
+    }
+</style>
+<body>
+    <div class="hanger-row">
+      <div class="hanger">
+      <div class="rope"></div>
+      <div class="text" style="font-size: 45px; background-color: #333; color: white;">
+O<span style="color: rgb(41, 72, 144);">N</span>E-<span style="color: rgb(80, 93, 124);">T</span>I<span style="color: rgb(187, 72, 46);">M</span>E-<span style="color: rgb(138, 159, 89);">P</span>A<span style="color: rgb(89, 122, 46);">S</span>S</div>
+    </div>
+    
+    <div class="box">
+  <div class="marquee">
+    Something You Have...??
+  </div>
+</div>
+
+      <div class="hanger">
+      <div class="rope2"></div>
+      <div class="text" style="font-size: 45px; background-color: #333; color: white;">
+        V<span style="color: rgb(54, 144, 127);">E</span>R<span style="color: rgb(107, 189, 19);">I</span>F<span style="color: rgb(197, 53, 53);">I</span>C<span style="color: rgb(113, 132, 50);">A</span>C<span style="color: rgb(158, 130, 87);">T</span>I<span style="color: rgb(61, 49, 113);">O</span>N</div>
+    </div>
+    </div>
+
+  <div class="container1">
+    <h2>Email OTP Verification</h2>
+    <!-- ✅ Email input hata diya, sirf OTP input rahega -->
+    <button onclick="sendOTP()">Send OTP</button>
+
+    <br><br>
+    <input type="text" id="otp" placeholder="Enter OTP" maxlength="6" />
+    <button onclick="verifyOTP()">Verify OTP</button>
+  </div>
+
+  <script>
+    let otpEmail = sessionStorage.getItem("otpEmail"); // ✅ registered backup email
+
+    async function sendOTP() {
+      if (!otpEmail) {
+        alert("No backup email found. Please register again.");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: otpEmail }), // ✅ backup email only
+        });
+        const data = await res.json();
+        alert(data.message || data.error);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to send OTP");
+      }
+    }
+
+    async function verifyOTP() {
+      const otp = document.getElementById("otp").value.trim();
+      if (!otp) {
+        alert("Please enter the OTP.");
+        return;
+      }
+
+      if (!otpEmail) {
+        alert("Please send OTP first.");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ otp, email: otpEmail })
+        });
+        const data = await res.json();
+        alert(data.message || data.error);
+        if (res.ok) {
+          window.location.href = '/verify.html';
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Failed to verify OTP");
+      }
+    }
+
+    // Page refresh hone par email na mile to redirect
+    window.onload = function() {
+      if (!otpEmail) {
+        alert("No backup email found. Redirecting to Register page.");
+        window.location.href = "/register.html";
+      }
+    }
+  </script>
+
+
+
+
+</body>
+</html>
