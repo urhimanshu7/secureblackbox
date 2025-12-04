@@ -89,35 +89,51 @@ app.post("/register", async (req, res) => {
   try {
     const { email, password, twoFactorPassword, otpEmail, altEmail } = req.body;
 
-    
     const backupEmail = otpEmail || altEmail;
+
+    // Required fields
     if (!email || !backupEmail || !password || !twoFactorPassword) {
       return res.status(400).json({ error: "email, backup email, password, 2FA required" });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ error: "Email already in use." });
+    // 🔥 MAIN CHECK → Both emails must be different
+    if (email === backupEmail) {
+      return res.status(400).json({ error: "Main email and backup email must be different." });
+    }
+
+    // Check existing accounts
+    const existingMain = await User.findOne({ email });
+    if (existingMain) {
+      return res.status(400).json({ error: "This main email is already registered." });
+    }
 
     const existingBackup = await User.findOne({ otpEmail: backupEmail });
-    if (existingBackup) return res.status(400).json({ error: "Backup email already used." });
+    if (existingBackup) {
+      return res.status(400).json({ error: "This backup email is already used." });
+    }
 
+    // Hash passwords
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashed2FA = await bcrypt.hash(twoFactorPassword, 10);
 
+    // Save user
     const newUser = new User({
       email,
       otpEmail: backupEmail,
       password: hashedPassword,
-      twoFactorPassword: hashed2FA,
+      twoFactorPassword: hashed2FA
     });
+
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully." });
+
   } catch (err) {
     console.error("register error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 // ------------------- LOGIN -------------------
 
@@ -346,6 +362,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
