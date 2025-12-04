@@ -303,7 +303,7 @@
     }
 
     try {
-      const res = await fetch(`https://YOUR-RENDER-URL/check-email?email=${encodeURIComponent(email)}`);
+      const res = await fetch(`https://secureblackbox.onrender.com/check-email?email=${encodeURIComponent(email)}`);
       const data = await res.json();
 
       if (res.ok && data.available) {
@@ -337,7 +337,7 @@
       return;
     }
 
-    const res = await fetch('http://localhost:5000/register', {
+    const res = await fetch('http://secureblackbox.onrender.com/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, otpEmail, password, twoFactorPassword })
@@ -357,4 +357,5 @@
 
 </body>
 </html>
+
 
