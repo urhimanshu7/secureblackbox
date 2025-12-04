@@ -95,7 +95,7 @@
     const finalToken = localStorage.getItem('finalToken');
 
     async function fetchFiles() {
-      const res = await fetch(`http://localhost:5000/files`, {
+      const res = await fetch(`http://secureblackbox.onrender.com/files`, {
         headers: { Authorization: `Bearer ${finalToken}` }
       });
       const data = await res.json();
@@ -112,7 +112,7 @@ data.files.forEach(file => {
   const viewBtn = document.createElement('button');
   viewBtn.textContent = 'View';
   viewBtn.onclick = async () => {
-    const res = await fetch(`http://localhost:5000/view/${file.filename}`, {
+    const res = await fetch(`http://secureblackbox.onrender.com/view/${file.filename}`, {
       headers: { Authorization: `Bearer ${finalToken}` }
     });
     const blob = await res.blob();
@@ -126,7 +126,7 @@ data.files.forEach(file => {
   const downloadBtn = document.createElement('button');
   downloadBtn.textContent = 'Download';
   downloadBtn.onclick = async () => {
-    const res = await fetch(`http://localhost:5000/download/${file.filename}`, {
+    const res = await fetch(`http://secureblackbox.onrender.com/download/${file.filename}`, {
       headers: { Authorization: `Bearer ${finalToken}` }
     });
     const blob = await res.blob();
@@ -151,7 +151,7 @@ data.files.forEach(file => {
     }
 
     async function deleteFile(filename) {
-      const res = await fetch(`http://localhost:5000/delete/${filename}`, {
+      const res = await fetch(`http://secureblackbox.onrender.com/delete/${filename}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${finalToken}` }
       });
@@ -164,7 +164,7 @@ data.files.forEach(file => {
       e.preventDefault();
       const formData = new FormData(e.target);
 
-      const res = await fetch('http://localhost:5000/upload', {
+      const res = await fetch('http://secureblackbox.onrender.com/upload', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${finalToken}`
@@ -187,3 +187,4 @@ data.files.forEach(file => {
   </script>
 </body>
 </html>
+
