@@ -76,9 +76,7 @@ let otpStore = {}; // { email: otp }
 
 // Gmail transporter
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // 
+  service: "gmail", 
   auth: {
     user: "secureblackbox7@gmail.com",
     pass: "wfggwakzhxcatypg" 
@@ -348,6 +346,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
