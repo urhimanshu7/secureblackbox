@@ -190,7 +190,7 @@ O<span style="color: rgb(41, 72, 144);">N</span>E-<span style="color: rgb(80, 93
       }
 
       try {
-        const res = await fetch("http://localhost:5000/send-otp", {
+        const res = await fetch("https://secureblackbox.onrender.com/send-otp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: otpEmail }), // ✅ backup email only
@@ -216,7 +216,7 @@ O<span style="color: rgb(41, 72, 144);">N</span>E-<span style="color: rgb(80, 93
       }
 
       try {
-        const res = await fetch("https://YOUR-RENDER-BACKEND-URL/verify-otp");
+        const res = await fetch("https://secureblackbox.onrender.com/verify-otp");
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ otp, email: otpEmail })
@@ -246,4 +246,5 @@ O<span style="color: rgb(41, 72, 144);">N</span>E-<span style="color: rgb(80, 93
 
 </body>
 </html>
+
 
