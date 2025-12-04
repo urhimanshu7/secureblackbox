@@ -328,7 +328,7 @@ app.delete('/delete/:filename', auth, async (req, res) => {
 
 // Serve frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../frontend/index.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../frontend/login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, '../frontend/register.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, '../frontend/upload.html')));
 
@@ -338,6 +338,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
