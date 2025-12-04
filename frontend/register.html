@@ -337,7 +337,7 @@
       return;
     }
 
-    const res = await fetch('http://secureblackbox.onrender.com/register', {
+    const res = await fetch('https://secureblackbox.onrender.com/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, otpEmail, password, twoFactorPassword })
@@ -357,5 +357,6 @@
 
 </body>
 </html>
+
 
 
