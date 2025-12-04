@@ -333,5 +333,6 @@ app.get('/register', (req, res) => res.sendFile(path.join(__dirname, '../fronten
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, '../frontend/upload.html')));
 
 // Start server
-app.listen(5000, () => console.log(`Server running on port ${PORT}`);
+app.listen(5000, () => console.log(`Server running on port ${PORT}`));
+
 
