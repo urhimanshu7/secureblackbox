@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3 Hangers Example</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      width: 100%;
+      background: rgb(78, 142, 153);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Hanger container row */
+    .hanger-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0px 150px;
+      position: relative;
+    }
+
+    .hanger {
+      margin-top: 0;
+      padding-top: 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: swing 1.5s infinite ease-in-out;
+      transform-origin: top center;
+      
+    }
+
+    .rope {
+      width: 4px;
+      height: 210px;
+      background-color: #333;
+    }
+
+    .rope1 {
+      width: 4px;
+      height: 65px;
+      background-color: #333;
+    }
+
+    .rope2 {
+      width: 4px;
+      height: 210px;
+      background-color: #333;
+    }
+
+    .text {
+      background: #20c997;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 0px;
+    }
+
+    @keyframes swing {
+      0% { transform: rotate(2deg); }
+      50% { transform: rotate(-2deg); }
+      100% { transform: rotate(2deg); }
+    }
+
+    /* Form wrapper */
+    .form-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    form {
+      background-color: #aeb28c;
+      padding: 50px 40px;
+      border-radius: 55px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 450px;
+      animation: slideIn 0.5s ease-in-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 14px 16px;
+      margin: 15px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #20c997;
+      outline: none;
+      box-shadow: 0 0 8px rgba(32, 201, 151, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #5a4a9a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #260371;
+    }
+
+    h4 {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    h4 a {
+      color: #0770c6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h4 a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .hanger-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .text {
+        font-size: 16px;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!--Hanger Row: Left, Center, Right -->
+  <div class="hanger-row">
+    <div class="hanger">
+      <div class="rope"></div>
+    <div class="text" style="font-size: 45px; background-color: #333; color: white;">
+  S<span style="color: rgb(80, 93, 124);">E</span>C<span style="color: red;">U</span>R<span style="color: rgb(104, 178, 184);">E</span>
+</div>
+
+    </div>
+
+    <div class="hanger">
+      <div class="rope1"></div>
+      <div class="text" style="font-size: 45px; background-color: rgb(71, 64, 120); color: white;">
+        B<span style="color: #988787;">L</span>A<span style="color: rgb(166, 174, 73);">C</span>K</div>
+    </div>
+
+    <div class="hanger">
+      <div class="rope2"></div>
+      <div class="text" style="font-size: 45px; background-color: #823384; color: white;">
+  <span style="color: rgb(20, 131, 199);">B</span>O<span style="color: rgb(156, 179, 25);">X</span></div>
+    </div>
+  </div>
+
+  <!-- 🔐 Login Form -->
+  <div class="form-wrapper">
+    <form id="loginForm">
+    <form id="loginForm" autocomplete="off">
+      <h2>Login Your Account</h2>
+      <input type="email" name="email" placeholder="Enter Your E-mail" autocomplete="off" required />
+<input type="password" name="password" placeholder="Passsword" autocomplete="new-password" required/>
+      <button type="submit">Login</button><br><br>
+      <h3>If you do not have an account? <a href="register.html">Register</a></h3>
+    </form>
+  </div>
+
+ <script>
+  // Java SCript
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('loginForm').reset();
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const res = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+  localStorage.setItem('tempToken', data.tempToken);
+  sessionStorage.setItem('otpEmail', data.otpEmail); // save backup email
+  window.location.href = '/OTP.html';
+}
+ else {
+      alert(data.error || 'Login failed');
+
+      // Optionally clear inputs after failure
+      e.target.reset();
+
+      // Refresh after 2 seconds if login fails
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    }
+  });
+</script>
+<script>
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+</script>
+
+
+</body>
+</html>

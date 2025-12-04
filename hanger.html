@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hanging Header</title>
+  <style>
+    body1 {
+      margin: 0;
+      padding: 0;
+      background: #e0f7f7;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .hanger {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 0;
+      padding-top: 20px;
+      animation: swing 3s infinite ease-in-out;
+      transform-origin: top center;
+    }
+
+    .rope {
+      width: 2px;
+      height: 80px;
+      background-color: #333;
+      position: absolute;
+      top: 0;
+    }
+
+    .text {
+      margin-top: 80px;
+      background: #20c997;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    @keyframes swing {
+      0% { transform: rotate(1.5deg); }
+      50% { transform: rotate(-1.5deg); }
+      100% { transform: rotate(1.5deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hanger">
+    <div class="rope"></div>
+    <div class="text">WELCOME TO MY SITE</div>
+  </div>
+
+  <!-- Baaki page ka content yaha likho -->
+  <div style="padding: 100px 20px; text-align: center;">
+    <h2>Page Content</h2>
+    <p>This is your main content area below the hanging header.</p>
+  </div>
+
+</body>
+</html>
