@@ -87,41 +87,37 @@ const transporter = nodemailer.createTransport({
 // ------------------- REGISTER -------------------
 app.post("/register", async (req, res) => {
   try {
-    const { email, password, twoFactorPassword, otpEmail, altEmail } = req.body;
+    const { email, password, twoFactorPassword, otpEmail } = req.body;
 
-    const backupEmail = otpEmail || altEmail;
-
-    // Required fields
-    if (!email || !backupEmail || !password || !twoFactorPassword) {
-      return res.status(400).json({ error: "email, backup email, password, 2FA required" });
+    if (!email || !otpEmail || !password || !twoFactorPassword) {
+      return res.status(400).json({ error: "All fields are required." });
     }
 
-    // 🔥 MAIN CHECK → Both emails must be different
-    if (email === backupEmail) {
-      return res.status(400).json({ error: "Main email and backup email must be different." });
+    // 1️⃣ Check: Email and Backup Email MUST NOT BE SAME
+    if (email === otpEmail) {
+      return res.status(400).json({ error: "Backup email must be different from main email." });
     }
 
-    // Check existing accounts
-    const existingMain = await User.findOne({ email });
-    if (existingMain) {
-      return res.status(400).json({ error: "This main email is already registered." });
+    // 2️⃣ Check: Email already used?
+    const user1 = await User.findOne({ email });
+    if (user1) {
+      return res.status(400).json({ error: "Email already registered." });
     }
 
-    const existingBackup = await User.findOne({ otpEmail: backupEmail });
-    if (existingBackup) {
-      return res.status(400).json({ error: "This backup email is already used." });
+    // 3️⃣ Check: Backup email already used?
+    const user2 = await User.findOne({ otpEmail });
+    if (user2) {
+      return res.status(400).json({ error: "Backup email already registered by another user." });
     }
 
-    // Hash passwords
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashed2FA = await bcrypt.hash(twoFactorPassword, 10);
 
-    // Save user
     const newUser = new User({
       email,
-      otpEmail: backupEmail,
+      otpEmail,
       password: hashedPassword,
-      twoFactorPassword: hashed2FA
+      twoFactorPassword: hashed2FA,
     });
 
     await newUser.save();
@@ -133,7 +129,6 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
 
 // ------------------- LOGIN -------------------
 
@@ -362,6 +357,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
