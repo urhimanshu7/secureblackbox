@@ -18,10 +18,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB setup
-mongoose.connect('mongodb://localhost:27017/loginApp', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected')).catch(err => console.error(err));
+mongoose.connect(
+  "mongodb+srv://<USERNAME>:<PASSWORD>@<CLUSTERNAME>.mongodb.net/<DBNAME>?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+)
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("MongoDB connection error:", err));
 
 // User Schema
 const UserSchema = new mongoose.Schema({
@@ -357,6 +362,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
