@@ -18,15 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB setup
-mongoose.connect(
-  "mongodb+srv://himanshu:<db_password>@admin.msumhke.mongodb.net/?appName=admin",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-)
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
 .then(() => console.log("MongoDB connected"))
-.catch((err) => console.error("MongoDB connection error:", err));
+.catch(err => console.error("MongoDB error:", err));
+
 
 // User Schema
 const UserSchema = new mongoose.Schema({
@@ -362,6 +360,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
