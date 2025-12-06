@@ -18,10 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB setup
-mongoose.connect('mongodb://localhost:27017/loginApp', {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected')).catch(err => console.error(err));
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error("MongoDB error:", err));
+
 
 // User Schema
 const UserSchema = new mongoose.Schema({
@@ -76,9 +79,7 @@ let otpStore = {}; // { email: otp }
 
 // Gmail transporter
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // 
+  service: "gmail", 
   auth: {
     user: "secureblackbox7@gmail.com",
     pass: "wfggwakzhxcatypg" 
@@ -89,32 +90,43 @@ const transporter = nodemailer.createTransport({
 // ------------------- REGISTER -------------------
 app.post("/register", async (req, res) => {
   try {
-    const { email, password, twoFactorPassword, otpEmail, altEmail } = req.body;
+    const { email, password, twoFactorPassword, otpEmail } = req.body;
 
-    
-    const backupEmail = otpEmail || altEmail;
-    if (!email || !backupEmail || !password || !twoFactorPassword) {
-      return res.status(400).json({ error: "email, backup email, password, 2FA required" });
+    if (!email || !otpEmail || !password || !twoFactorPassword) {
+      return res.status(400).json({ error: "All fields are required." });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ error: "Email already in use." });
+    // 1️⃣ Check: Email and Backup Email MUST NOT BE SAME
+    if (email === otpEmail) {
+      return res.status(400).json({ error: "Backup email must be different from main email." });
+    }
 
-    const existingBackup = await User.findOne({ otpEmail: backupEmail });
-    if (existingBackup) return res.status(400).json({ error: "Backup email already used." });
+    // 2️⃣ Check: Email already used?
+    const user1 = await User.findOne({ email });
+    if (user1) {
+      return res.status(400).json({ error: "Email already registered." });
+    }
+
+    // 3️⃣ Check: Backup email already used?
+    const user2 = await User.findOne({ otpEmail });
+    if (user2) {
+      return res.status(400).json({ error: "Backup email already registered by another user." });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashed2FA = await bcrypt.hash(twoFactorPassword, 10);
 
     const newUser = new User({
       email,
-      otpEmail: backupEmail,
+      otpEmail,
       password: hashedPassword,
       twoFactorPassword: hashed2FA,
     });
+
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully." });
+
   } catch (err) {
     console.error("register error:", err);
     res.status(500).json({ error: "Server error" });
@@ -327,10 +339,35 @@ app.delete('/delete/:filename', auth, async (req, res) => {
 
 
 // Serve frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../frontend/login.html')));
-app.get('/register', (req, res) => res.sendFile(path.join(__dirname, '../frontend/register.html')));
-app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, '../frontend/upload.html')));
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.get('/', (req, res) => 
+  res.sendFile(path.join(__dirname, 'frontend', 'login.html'))
+);
+
+app.get('/register', (req, res) => 
+  res.sendFile(path.join(__dirname, 'frontend', 'register.html'))
+);
+
+app.get('/dashboard', (req, res) => 
+  res.sendFile(path.join(__dirname, 'frontend', 'upload.html'))
+);
+
 
 // Start server
-app.listen(5000, () => console.log(' Server running on http://localhost:5000'));
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+
+
+
+
+
+
+
+
+
